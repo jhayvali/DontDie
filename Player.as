@@ -1,12 +1,11 @@
-﻿package
-{
+﻿package {
     import flash.display.Stage;
     import flash.display.MovieClip;
     import flash.events.Event;
     import KeyObject;
+    import flash.events.MouseEvent;
  
-    public class Player extends MovieClip
-    {
+    public class Player extends MovieClip {
         public var stageRef:Stage;
         public var key:KeyObject;
  
@@ -17,8 +16,7 @@
  
         public var speed:Number = 5; //add this Number variable
  
-        public function Player(stageRef:Stage, X:int, Y:int):void
-        {
+        public function Player(stageRef:Stage, X:int, Y:int):void {
             this.stageRef = stageRef;
             this.x = X;
             this.y = Y;
@@ -26,10 +24,14 @@
             key = new KeyObject(stageRef);
  
             addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
+			addEventListener(Event.ADDED_TO_STAGE, initialise);
         }
+		
+		public function initialise(_event:Event) {
+			stage.addEventListener(MouseEvent.CLICK, fire);
+		}
  
-        public function loop(e:Event):void
-        {
+        public function loop(e:Event):void {
             checkKeypresses();
  
             if(leftPressed){
@@ -53,8 +55,7 @@
 			rotation = Math.atan2(yDifference, xDifference) * radiansToDegrees;
         }
  
-        public function checkKeypresses():void
-        {
+        public function checkKeypresses():void {
             if(key.isDown(37) || key.isDown(65)){
                 leftPressed = true;
             } else {
@@ -79,5 +80,16 @@
                 downPressed = false;
             }
         }
+		
+		public function fire (_event:MouseEvent) {
+			// spawn a bullet
+			var b = new Bullet();
+			// set the position and rotation of the bullet
+			b.rotation = rotation;
+			b.x = x;
+			b.y = y;
+			// add the bullet to the parent object
+			parent.addChild(b);
+		}
     }
 }
