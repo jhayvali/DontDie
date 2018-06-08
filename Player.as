@@ -15,14 +15,21 @@
         public var downPressed:Boolean = false;
  
         public var speed:Number = 5; //add this Number variable
+		
+		private var shotCooldown:int;
+		private const MAX_COOLDOWN = 15;
+		
  
         public function Player(stageRef:Stage, X:int, Y:int):void {
+			// constructor
             this.stageRef = stageRef;
             this.x = X;
             this.y = Y;
- 
             key = new KeyObject(stageRef);
- 
+			
+			// set the shot cooldown;
+			shotCooldown = MAX_COOLDOWN;
+			
             addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
 			addEventListener(Event.ADDED_TO_STAGE, initialise);
         }
@@ -32,9 +39,24 @@
 		}
  
         public function loop(e:Event):void {
+			
+			// reduce the shot cooldown by 1
+			shotCooldown--;
+			
+			// reload
+			reload();
+			
+			// check if movement buttons are pressed
             checkKeypresses();
- 
-            if(leftPressed){
+			
+			// character movement
+			playerControl();
+			clampPlayerToStage();
+            
+        }
+		
+		public function playerControl() {
+			if(leftPressed){
                 x -= speed; // move to the left if leftPressed is true
             } else if(rightPressed){
                 x += speed; // move to the right if rightPressed is true
@@ -53,7 +75,27 @@
 			var radiansToDegrees:Number = 180/Math.PI;
 			//this final line uses trigonometry to calculate the rotation
 			rotation = Math.atan2(yDifference, xDifference) * radiansToDegrees;
-        }
+		}
+		
+		public function clampPlayerToStage() {
+			// if the player reaches the end of the stage
+				// setup the player to the edge of the stage
+			if (this.x < this.width/2) {
+				this.x = this.width/2;
+			}
+			
+			if (this.x > stage.stageWidth-(this.width/2)) {
+				this.x = stage.stageWidth-(this.width/2);
+			}
+			
+			if (this.y < this.height/2) {
+				this.y = this.height/2;
+			}
+			
+			if (this.y > stage.stageHeight-(this.height/2)) {
+				this.y = stage.stageHeight-(this.height/2);
+			}
+		}
  
         public function checkKeypresses():void {
             if(key.isDown(37) || key.isDown(65)){
@@ -82,14 +124,28 @@
         }
 		
 		public function fire (_event:MouseEvent) {
-			// spawn a bullet
-			var b = new Bullet();
-			// set the position and rotation of the bullet
-			b.rotation = rotation;
-			b.x = x;
-			b.y = y;
-			// add the bullet to the parent object
-			parent.addChild(b);
+			// if we're allowed to shoot
+			if (shotCooldown <= 0) {
+				// reset the cooldown
+				shotCooldown = MAX_COOLDOWN;
+				// spawn a bullet
+				var b = new Bullet();
+				// set the position and rotation of the bullet
+				b.rotation = rotation;
+				b.x = x;
+				b.y = y;
+				// add the bullet to the parent object
+				parent.addChild(b);
+				gotoAndPlay("shoot");
+			}
+		}
+		
+		
+		public function reload () {
+			// reload
+			if (key.isDown(82)){
+				gotoAndPlay("reload");
+			}
 		}
     }
 }
