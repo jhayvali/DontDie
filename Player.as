@@ -19,7 +19,6 @@
 		private var shotCooldown:int;
 		private const MAX_COOLDOWN = 15;
 		
- 
         public function Player(stageRef:Stage, X:int, Y:int):void {
 			// constructor
             this.stageRef = stageRef;
@@ -34,11 +33,11 @@
 			addEventListener(Event.ADDED_TO_STAGE, initialise);
         }
 		
-		public function initialise(_event:Event) {
+		private function initialise(_event:Event) {
 			stage.addEventListener(MouseEvent.CLICK, fire);
 		}
  
-        public function loop(e:Event):void {
+        private function loop(e:Event):void {
 			
 			// reduce the shot cooldown by 1
 			shotCooldown--;
@@ -55,7 +54,7 @@
             
         }
 		
-		public function playerControl() {
+		private function playerControl() {
 			if(leftPressed){
                 x -= speed; // move to the left if leftPressed is true
             } else if(rightPressed){
@@ -77,7 +76,7 @@
 			rotation = Math.atan2(yDifference, xDifference) * radiansToDegrees;
 		}
 		
-		public function clampPlayerToStage() {
+		private function clampPlayerToStage() {
 			// if the player reaches the end of the stage
 				// setup the player to the edge of the stage
 			if (this.x < this.width/2) {
@@ -97,7 +96,7 @@
 			}
 		}
  
-        public function checkKeypresses():void {
+        private function checkKeypresses():void {
             if(key.isDown(37) || key.isDown(65)){
                 leftPressed = true;
             } else {
@@ -123,7 +122,7 @@
             }
         }
 		
-		public function fire (_event:MouseEvent) {
+		private function fire (_event:MouseEvent) {
 			// if we're allowed to shoot
 			if (shotCooldown <= 0) {
 				// reset the cooldown
@@ -134,17 +133,19 @@
 				b.rotation = rotation;
 				b.x = x;
 				b.y = y;
+				// add bullet to array
+				MovieClip(parent).bullets.push(b);
 				// add the bullet to the parent object
 				parent.addChild(b);
-				gotoAndPlay("shoot");
+				//gotoAndStop("handgun_shoot");
 			}
 		}
 		
 		
-		public function reload () {
+		private function reload () {
 			// reload
 			if (key.isDown(82)){
-				gotoAndPlay("reload");
+				//gotoAndStop("handgun_reload");
 			}
 		}
     }
