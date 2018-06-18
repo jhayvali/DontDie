@@ -2,6 +2,7 @@
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import GameConstants;
 	
 	
 	public class Bullet extends Sprite {
@@ -10,7 +11,7 @@
 		
 		public function Bullet() {
 			// constructor code
-			speed = 20;
+			speed = GameConstants.BULLET_SPEED;
 		}
 		
 		public function update() {

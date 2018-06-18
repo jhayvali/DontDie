@@ -2,16 +2,22 @@
     import flash.display.Stage;
     import flash.display.MovieClip;
     import flash.events.Event;
+	import GameConstants;
  
     public class Main extends MovieClip {
         private var player:Player;
 		
-		var bullets:Array;
-		var enemys:Array;
+		private var bullets:Array;
+		private var enemys:Array;
 		
 		private var count:int;
+		
+		private var enemySpeed:int;
+		
+		private var g:GameConstants;
  
         public function Main():void {
+			g =new GameConstants();
             player = new Player(stage, 320, 240); //pass the stage as the first argument
 			addChild(player);
 			
@@ -19,6 +25,7 @@
 			enemys = new Array();
 			bullets = new Array();
 			count = 0;
+			enemySpeed = GameConstants.ENEMY_SPEED;
         }
 		
 		private function loop(_event:Event) {
@@ -62,21 +69,25 @@
 		private function moveEnemys() {
 			for (var k = 0; k<enemys.length;k++) {
 				if(enemys[k].x < player.x) {
-					enemys[k].x += 2;
+					enemys[k].x += enemySpeed;
 					if(enemys[k].y < player.y) {
-						enemys[k].y += 2;
+						enemys[k].y += enemySpeed;
 					} else if(enemys[k].y > player.y) {
-						enemys[k].y -= 2;
+						enemys[k].y -= enemySpeed;
 					} 
 				} else if(enemys[k].x > player.x) {
-					enemys[k].x -= 2;
+					enemys[k].x -= enemySpeed;
 					if(enemys[k].y < player.y) {
-						enemys[k].y += 2;
+						enemys[k].y += enemySpeed;
 					} else if(enemys[k].y > player.y) {
-						enemys[k].y -= 2;
+						enemys[k].y -= enemySpeed;
 					} 
 				}
 			}
+		}
+		
+		public function setBulletArray(b:Bullet) {
+			bullets.push(b);
 		}
     }
 }

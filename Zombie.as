@@ -1,7 +1,7 @@
 ﻿package  {
 	
 	import flash.display.MovieClip;
-	
+	import GameConstants;
 	
 	public class Zombie extends MovieClip {
 		
@@ -10,7 +10,7 @@
 		public function Zombie(_x : int, _y : int) {
 			x = _x;
 			y = _y;
-			health = 1;
+			health = GameConstants.ZOMBIE_MELEE_HEALTH;
 		}
 		
 		public function update(target:MovieClip) {

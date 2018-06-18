@@ -3,35 +3,44 @@
     import flash.display.MovieClip;
     import flash.events.Event;
     import KeyObject;
+	import GameConstants;
     import flash.events.MouseEvent;
  
     public class Player extends MovieClip {
-        public var stageRef:Stage;
-        public var key:KeyObject;
+        private var stageRef:Stage;
+        private var key:KeyObject;
  
-        public var leftPressed:Boolean = false;
-        public var rightPressed:Boolean = false;
-        public var upPressed:Boolean = false;
-        public var downPressed:Boolean = false;
+        private var leftPressed:Boolean;
+        private var rightPressed:Boolean;
+        private var upPressed:Boolean;
+        private var downPressed:Boolean;
  
-        public var speed:Number = 5; //add this Number variable
+        private var speed:Number; //add this Number variable
 		
 		private var shotCooldown:int;
-		private const MAX_COOLDOWN = 15;
 		
         public function Player(stageRef:Stage, X:int, Y:int):void {
 			// constructor
+			init();
             this.stageRef = stageRef;
             this.x = X;
             this.y = Y;
+			speed = GameConstants.PLAYER_SPEED;
             key = new KeyObject(stageRef);
 			
 			// set the shot cooldown;
-			shotCooldown = MAX_COOLDOWN;
+			shotCooldown = GameConstants.HANDGUN_RELOAD_COOLDOWN;
 			
             addEventListener(Event.ENTER_FRAME, loop, false, 0, true);
 			addEventListener(Event.ADDED_TO_STAGE, initialise);
         }
+		
+		private function init() {			
+			leftPressed = false;
+			rightPressed = false;
+			upPressed = false;
+			downPressed = false;
+		}
 		
 		private function initialise(_event:Event) {
 			stage.addEventListener(MouseEvent.CLICK, fire);
@@ -126,7 +135,7 @@
 			// if we're allowed to shoot
 			if (shotCooldown <= 0) {
 				// reset the cooldown
-				shotCooldown = MAX_COOLDOWN;
+				shotCooldown = GameConstants.HANDGUN_RELOAD_COOLDOWN;
 				// spawn a bullet
 				var b = new Bullet();
 				// set the position and rotation of the bullet
@@ -134,7 +143,7 @@
 				b.x = x;
 				b.y = y;
 				// add bullet to array
-				MovieClip(parent).bullets.push(b);
+				MovieClip(parent).setBulletArray(b)
 				// add the bullet to the parent object
 				parent.addChild(b);
 				//gotoAndStop("handgun_shoot");
