@@ -5,7 +5,6 @@
 	import fl.transitions.TweenEvent;
 	import fl.transitions.easing.*;
 	import flash.events.Event;
-	import fl.transitions.Tween;
 
 	public class Explosion extends Sprite {
 

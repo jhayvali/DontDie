@@ -4,13 +4,17 @@
 	import flash.events.Event;
 	import ExplosionChain;
 	import LevelEvent;
+	import flash.utils.Timer;
+	import flash.events.TimerEvent;
 
 	public class Level extends MovieClip {
 
 		protected var ghosts: Array;
 		protected var bullets: Array;
 		protected var gameOver: Boolean;
-		private var score: int;
+		protected var spawning: Boolean;
+		protected var score: int;
+		protected var timer: Timer;
 
 		public function Level() {
 			// constructor code
@@ -18,12 +22,23 @@
 			ghosts = new Array();
 			bullets = new Array();
 			gameOver = false;
+			spawning = false;
 			score = 0;
+			timer = new Timer(3000, 1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, beginSpawning);
+			timer.start();
+		}
+
+		protected function beginSpawning(t: TimerEvent) {
+			spawning = true;
+		}
+
+		protected function transitionOut(t: TimerEvent) {
+			var ev: LevelEvent = new LevelEvent(LevelEvent.GAME_OVER, score);
+			dispatchEvent(ev);
 		}
 
 		protected function everyFrame(event: Event) {
-
-
 
 			doBullets();
 
@@ -35,8 +50,10 @@
 
 				if (thePlayer.health <= 0) {
 					gameOver = true;
-					var ev:LevelEvent = new LevelEvent(LevelEvent.GAME_OVER, score);
-					dispatchEvent(ev);
+					timer = new Timer(3000, 1);
+					timer.addEventListener(TimerEvent.TIMER_COMPLETE, transitionOut);
+					timer.start();
+
 					var ex = new ExplosionChain(60, 0.3, 60, 20, 45);
 					ex.x = thePlayer.x;
 					ex.y = thePlayer.y;
@@ -49,6 +66,9 @@
 		}
 
 		protected function doSpawning() {
+			if (!spawning)
+				return;
+
 			if (numChildren < 10) {
 				var g = new Ghost();
 				addChild(g);
