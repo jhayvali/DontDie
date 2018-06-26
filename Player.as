@@ -18,7 +18,7 @@
 		private var shotCooldown: int;
 		private var speed: Number;
 		private var firing: Boolean;
-		private var numShots: int;
+		public var numShots: int;
 		
 		public var health:Number;
 

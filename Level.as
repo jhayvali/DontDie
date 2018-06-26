@@ -6,6 +6,11 @@
 	import LevelEvent;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
+	import fl.transitions.Tween;
+	import fl.transitions.TweenEvent;
+	import fl.transitions.easing.*;
+	import flash.ui.Keyboard;
+	import flash.events.KeyboardEvent;
 
 	public class Level extends MovieClip {
 
@@ -15,6 +20,9 @@
 		protected var spawning: Boolean;
 		protected var score: int;
 		protected var timer: Timer;
+		protected var spawnCounter: int;
+		protected var numToSpawn: int;
+		protected var numToSpawnCounter: int;
 
 		public function Level() {
 			// constructor code
@@ -24,9 +32,26 @@
 			gameOver = false;
 			spawning = false;
 			score = 0;
+			spawnCounter = 0;
+			numToSpawn = 1;
+			numToSpawnCounter = 0;
 			timer = new Timer(3000, 1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, beginSpawning);
 			timer.start();
+			addEventListener(Event.ADDED_TO_STAGE, init);
+		}
+		
+		protected function init(e:Event) {
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+		}
+		
+		protected function keyPressed(k:KeyboardEvent) {
+			if(k.keyCode==Keyboard.Q) {
+				thePlayer.numShots++;
+			}
+			if(k.keyCode==Keyboard.E) {
+				thePlayer.numShots--;
+			}
 		}
 
 		protected function beginSpawning(t: TimerEvent) {
@@ -39,6 +64,9 @@
 		}
 
 		protected function everyFrame(event: Event) {
+
+			spawnCounter++;
+			numToSpawnCounter++;
 
 			doBullets();
 
@@ -68,14 +96,23 @@
 		protected function doSpawning() {
 			if (!spawning)
 				return;
+			
+			if(numToSpawnCounter > 200){
+				numToSpawn++;
+				numToSpawnCounter = 0;
+			}
 
-			if (numChildren < 10) {
-				var g = new Ghost();
-				addChild(g);
-				g.x = Math.random() * stage.stageWidth;
-				g.y = Math.random() * stage.stageHeight;
-				g.rotation = Math.random() * 360;
-				ghosts.push(g);
+			if (spawnCounter > 100) {
+				spawnCounter = 0;
+				for (var i = 0; i < numToSpawn; i++) {
+					var g = new Ghost();
+					addChild(g);
+					var rnd:Number = Math.random()*2*Math.PI;
+					g.x = thePlayer.x + Math.cos(rnd)*360;
+					g.y = thePlayer.y + Math.sin(rnd)*360;
+					g.rotation = Math.random() * 360;
+					ghosts.push(g);
+				}
 			}
 		}
 
