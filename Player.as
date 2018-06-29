@@ -51,6 +51,7 @@
 		
 		public function update() {
 			shotCooldown--;
+			if (shotCooldown<-1) shotCooldown=-1;
 			checkKeypresses();
 			movePlayer();
 			clampPlayerToStage();
@@ -71,7 +72,7 @@
 				shotCooldown += 15/(1+bonusFiringSpeed);
 				for (var i = 0; i < numShots+bonusShots; i++) {
 					var b = new Bullet();
-					b.rotation = rotation-(5*(numShots-1)/2)+(i*5);
+					b.rotation = rotation-(5*(numShots+bonusShots-1)/2)+(i*5);
 					b.x = x;
 					b.y = y;
 					MovieClip(parent).setBullets(b);

@@ -17,6 +17,7 @@
 		protected var ghosts: Array;
 		protected var bullets: Array;
 		public var perks: Array;
+		public var keys: Array;
 		protected var gameOver: Boolean;
 		protected var spawning: Boolean;
 		protected var score: int;
@@ -31,6 +32,7 @@
 			ghosts = new Array();
 			bullets = new Array();
 			perks = new Array();
+			keys = new Array();
 			gameOver = false;
 			spawning = false;
 			score = 0;
@@ -49,11 +51,28 @@
 		
 		protected function keyPressed(k:KeyboardEvent) {
 			if(k.keyCode==Keyboard.Q) {
-				perks.push(new Perk(thePlayer,0.1,"bonusFiringSpeed", "Rapid Fire"));
+				keys.push("Q");
 			}
 			if(k.keyCode==Keyboard.E) {
-				perks.push(new Perk(thePlayer));
+				keys.push("E");
 			}
+			if (keys.length==2) {
+				addPerk();
+			}
+		}
+		
+		protected function addPerk() {
+			switch(keys.toString()) {
+				case "Q,Q":
+					perks.push(new Perk(thePlayer,0.1,"bonusFiringSpeed", "Rapid Fire"));
+					break;
+				case "E,E":
+					perks.push(new Perk(thePlayer));
+					break;
+				default:
+					break;
+			}
+			keys=new Array();
 		}
 
 		protected function beginSpawning(t: TimerEvent) {
@@ -91,6 +110,8 @@
 				}
 			}
 			
+			healthBar.gotoAndStop(Math.round((thePlayer.health/10)*100));
+			
 			doPerks();
 			
 			output.text = "Score: " + score;
@@ -100,7 +121,11 @@
 		protected function doPerks() {
 			for (var i = perks.length-1; i>=0;i--) {
 				perks[i].update();
+				addChild(perks[i]);
+				perks[i].x=0;
+				perks[i].y=stage.stageHeight-15-(i*perks[i].BAR_HEIGHT);
 				if(perks[i].dead()) {
+					removeChild(perks[i]);
 					perks.splice(i,1);
 				}
 			}
