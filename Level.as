@@ -16,6 +16,7 @@
 
 		protected var ghosts: Array;
 		protected var bullets: Array;
+		public var perks: Array;
 		protected var gameOver: Boolean;
 		protected var spawning: Boolean;
 		protected var score: int;
@@ -29,6 +30,7 @@
 			addEventListener(Event.ENTER_FRAME, everyFrame);
 			ghosts = new Array();
 			bullets = new Array();
+			perks = new Array();
 			gameOver = false;
 			spawning = false;
 			score = 0;
@@ -47,10 +49,10 @@
 		
 		protected function keyPressed(k:KeyboardEvent) {
 			if(k.keyCode==Keyboard.Q) {
-				thePlayer.numShots++;
+				perks.push(new Perk(thePlayer,0.1,"bonusFiringSpeed", "Rapid Fire"));
 			}
 			if(k.keyCode==Keyboard.E) {
-				thePlayer.numShots--;
+				perks.push(new Perk(thePlayer));
 			}
 		}
 
@@ -88,9 +90,20 @@
 					addChild(ex);
 				}
 			}
-
+			
+			doPerks();
+			
 			output.text = "Score: " + score;
 
+		}
+		
+		protected function doPerks() {
+			for (var i = perks.length-1; i>=0;i--) {
+				perks[i].update();
+				if(perks[i].dead()) {
+					perks.splice(i,1);
+				}
+			}
 		}
 
 		protected function doSpawning() {

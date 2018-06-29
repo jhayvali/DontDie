@@ -15,11 +15,12 @@
 		private var downPressed: Boolean;
 		private var key: KeyObject;
 
-		private var shotCooldown: int;
+		private var shotCooldown: Number;
+		public var bonusFiringSpeed:Number;
 		private var speed: Number;
 		private var firing: Boolean;
 		public var numShots: int;
-		
+		public var bonusShots:int;
 		public var health:Number;
 
 
@@ -29,7 +30,9 @@
 			health = 10;
 			shotCooldown = 15;
 			speed = 5;
-			numShots = 3;
+			bonusFiringSpeed=0;
+			numShots = 1;
+			bonusShots = 0;
 			addEventListener(Event.ADDED_TO_STAGE, initialise);
 		}
 
@@ -64,9 +67,9 @@
 		}
 
 		private function fire() {
-			if (shotCooldown <= 0) {
-				shotCooldown = 15;
-				for (var i = 0; i < numShots; i++) {
+			while (shotCooldown <= 0) {
+				shotCooldown += 15/(1+bonusFiringSpeed);
+				for (var i = 0; i < numShots+bonusShots; i++) {
 					var b = new Bullet();
 					b.rotation = rotation-(5*(numShots-1)/2)+(i*5);
 					b.x = x;
