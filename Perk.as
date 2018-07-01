@@ -21,7 +21,7 @@
 			target = tar;
 			lifeSpan = l;
 			maxLifeSpan = l;
-			perkName.text=t+"::::::::::::::::";
+			perkName.text=t;
 			perkName.blendMode="invert";
 			target[attribute] += strength;
 		}

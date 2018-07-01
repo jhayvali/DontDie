@@ -40,7 +40,7 @@
 				timeToTarget = 0;
 			}
 		}
-		dsd
+		
 		public function getHealth():int{
 			return health;
 		}

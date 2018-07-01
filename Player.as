@@ -26,6 +26,7 @@
 		public var health:Number;
 		public var fireSound:Sound;
 		public var radius:int;
+		public var energy:Number;
 
 
 		public function Player() {
@@ -38,6 +39,7 @@
 			numShots = 1;
 			bonusShots = 0;
 			radius = 15;
+			energy = 100/2;
 			fireSound = new LaserSound();
 			addEventListener(Event.ADDED_TO_STAGE, initialise);
 			addEventListener(Event.REMOVED_FROM_STAGE, cleanup);
@@ -62,6 +64,8 @@
 		}
 		
 		public function update() {
+			energy+=0.3;
+			if (energy>100) energy = 100;
 			shotCooldown--;
 			if (shotCooldown<-1) shotCooldown=-1;
 			checkKeypresses();

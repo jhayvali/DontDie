@@ -13,6 +13,7 @@
 	import flash.events.KeyboardEvent;
 	import flash.media.Sound;
 	import ReusableCode.MyMaths;
+	import flash.ui.Mouse;
 
 	public class Level extends MovieClip {
 
@@ -51,10 +52,12 @@
 		}
 		
 		protected function init(e:Event) {
+			Mouse.hide();
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
 		}
 		
 		protected function cleanup(e:Event) {
+			Mouse.show();
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
 		}
 		
@@ -66,22 +69,27 @@
 				keys.push("E");
 			}
 			if (keys.length==2) {
-				addPerk();
+				if (thePlayer.energy >=20) {
+					if (addPerk()) {
+						thePlayer.energy-=20;
+					}
+				}
+				keys=new Array();
 			}
 		}
 		
-		protected function addPerk() {
+		protected function addPerk():Boolean {
 			switch(keys.toString()) {
 				case "Q,Q":
 					perks.push(new Perk(thePlayer,0.1,"bonusFiringSpeed", "Rapid Fire"));
-					break;
+					return true;
 				case "E,E":
 					perks.push(new Perk(thePlayer));
-					break;
+					return true;
 				default:
 					break;
 			}
-			keys=new Array();
+			return false;
 		}
 
 		protected function beginSpawning(t: TimerEvent) {
@@ -120,6 +128,10 @@
 			}
 			
 			healthBar.gotoAndStop(Math.round((thePlayer.health/10)*100));
+			energyBar.gotoAndStop(Math.round((thePlayer.energy/100)*100));
+			
+			crosshair.x = mouseX;
+			crosshair.y = mouseY;
 			
 			doPerks();
 			
