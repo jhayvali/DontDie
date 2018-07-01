@@ -7,10 +7,12 @@
 	public class Bullet extends Sprite {
 		
 		private var speed: int;
+		public var radius:int;
 
 		public function Bullet() {
 			// constructor code
 			speed = 10;
+			radius = 3;
 		}
 
 		public function update() {

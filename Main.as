@@ -8,6 +8,7 @@
 	import fl.transitions.easing.*;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
+	import flash.system.System;
 
 
 	public class Main extends MovieClip {
@@ -39,6 +40,7 @@
 		public function doGameOver(event: LevelEvent) {
 			endScore = event.score;
 			targetFrame = "GameOver";
+			theLevel.removeEventListener(LevelEvent.GAME_OVER, doGameOver);
 			tweenOut();
 		}
 
@@ -81,6 +83,7 @@
 		}
 		
 		private function tweenedOut(t: TweenEvent) {
+			System.gc();
 			gotoLabel(targetFrame);
 		}
 	}

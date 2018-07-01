@@ -11,6 +11,8 @@
 	import fl.transitions.easing.*;
 	import flash.ui.Keyboard;
 	import flash.events.KeyboardEvent;
+	import flash.media.Sound;
+	import ReusableCode.MyMaths;
 
 	public class Level extends MovieClip {
 
@@ -18,6 +20,7 @@
 		protected var bullets: Array;
 		public var perks: Array;
 		public var keys: Array;
+		protected var ghostSound:GhostSound;
 		protected var gameOver: Boolean;
 		protected var spawning: Boolean;
 		protected var score: int;
@@ -39,14 +42,20 @@
 			spawnCounter = 0;
 			numToSpawn = 1;
 			numToSpawnCounter = 0;
+			ghostSound = new GhostSound();
 			timer = new Timer(3000, 1);
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, beginSpawning);
 			timer.start();
 			addEventListener(Event.ADDED_TO_STAGE, init);
+			addEventListener(Event.REMOVED_FROM_STAGE, cleanup);
 		}
 		
 		protected function init(e:Event) {
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
+		}
+		
+		protected function cleanup(e:Event) {
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, keyPressed);
 		}
 		
 		protected function keyPressed(k:KeyboardEvent) {
@@ -168,14 +177,14 @@
 				var gh = ghosts[count];
 				gh.update();
 				for (var bCount = bullets.length - 1; bCount >= 0; bCount--) {
-					if (gh.hitTestObject(bullets[bCount])) {
+					if (MyMaths.hitTest(gh,bullets[bCount])) {
 						gh.reduceHealth();
 						removeChild(bullets[bCount]);
 						bullets.splice(bCount, 1);
 					}
 				}
-
-				if (gh.hitTestObject(thePlayer)) {
+				
+				if (MyMaths.hitTest(gh,thePlayer)){
 					thePlayer.reduceHealth();
 					gh.reduceHealth();
 				}
@@ -184,6 +193,7 @@
 					score++;
 					removeChild(gh);
 					ghosts.splice(count, 1);
+					ghostSound.play();
 				}
 			}
 		}

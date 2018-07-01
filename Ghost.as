@@ -11,12 +11,14 @@
 		private var target: Point;
 		private var health: int;
 		private var timeToTarget:int;
+		public var radius:int;
 
 		public function Ghost() {
 			// constructor code
 			health = 1;
 			timeToTarget = 0;
 			speed = 2 + Math.random() * 5;
+			radius = 10;
 			target = new Point(Math.random() * 640, Math.random() * 500);
 		}
 
@@ -38,7 +40,7 @@
 				timeToTarget = 0;
 			}
 		}
-		
+		dsd
 		public function getHealth():int{
 			return health;
 		}

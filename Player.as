@@ -6,6 +6,8 @@
 	import flash.events.MouseEvent;
 	import KeyObject;
 	import ReusableCode.MyMaths;
+	import flash.media.Sound;
+	import flash.sampler.Sample;
 
 	public class Player extends MovieClip {
 
@@ -22,6 +24,8 @@
 		public var numShots: int;
 		public var bonusShots:int;
 		public var health:Number;
+		public var fireSound:Sound;
+		public var radius:int;
 
 
 		public function Player() {
@@ -33,7 +37,10 @@
 			bonusFiringSpeed=0;
 			numShots = 1;
 			bonusShots = 0;
+			radius = 15;
+			fireSound = new LaserSound();
 			addEventListener(Event.ADDED_TO_STAGE, initialise);
+			addEventListener(Event.REMOVED_FROM_STAGE, cleanup);
 		}
 
 		private function init() {
@@ -47,6 +54,11 @@
 		private function initialise(event: Event) {
 			stage.addEventListener(MouseEvent.MOUSE_DOWN, startFire);
 			stage.addEventListener(MouseEvent.MOUSE_UP, stopFire);
+		}
+		
+		private function cleanup(event: Event) {
+			stage.removeEventListener(MouseEvent.MOUSE_DOWN, startFire);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, stopFire);
 		}
 		
 		public function update() {
@@ -79,6 +91,7 @@
 					parent.addChild(b);
 				}
 				play();
+				fireSound.play();
 			}
 		}
 
