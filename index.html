@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>DontDie</title>
+		<style type="text/css" media="screen">
+		html, body { height:100%; background-color: #43b7ff;}
+		body { margin:0; padding:0; overflow:hidden; }
+		#flashContent { position:fixed;
+			top: 25%;
+			left: 25%;
+			margin-top: -9em; /*set to a negative number 1/2 of your height*/
+			margin-left: -15em; /*set to a negative number 1/2 of your width*/
+		}
+		#textfield {
+			position:fixed;
+			top: 25%;
+			left: 65%;
+			width:30em;
+			height:18em;
+			margin-top: -9em; /*set to a negative number 1/2 of your height*/
+			margin-left: -15em; /*set to a negative number 1/2 of your width*/
+			background-color: #f3f3f3;
+		}
+		
+		#text{
+			margin-left: 5%;
+		}
+		</style>
+	</head>
+	<body>
+		<div id="flashContent">
+			<object type="application/x-shockwave-flash" data="DontDie.swf" width="640" height="480" id="DontDie" style="float: none; vertical-align:middle">
+				<param name="movie" value="DontDie.swf" />
+				<param name="quality" value="high" />
+				<param name="bgcolor" value="#000000" />
+				<param name="play" value="true" />
+				<param name="loop" value="true" />
+				<param name="wmode" value="window" />
+				<param name="scale" value="showall" />
+				<param name="menu" value="true" />
+				<param name="devicefont" value="false" />
+				<param name="salign" value="" />
+				<param name="allowScriptAccess" value="sameDomain" />
+				<a href="http://www.adobe.com/go/getflash">
+					<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+				</a>
+			</object>
+		</div>
+		<div id="textfield">
+			<p id="text">Steuerung mit "WASD"</p>
+			</br>
+			<p id="text">Schießen mit "Linker Maustaste"</p>
+			</br>
+			<p id="text">Feuerrate Buff mit "Q"</p>
+			</br>
+			<p id="text">Anzahl Schüsse Buff mit "E"</p>
+		</div>
+	</body>
+</html>
