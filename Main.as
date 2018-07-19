@@ -20,6 +20,7 @@
 		private var proTips:Array;
 		
 		public function Main() {
+			var c: Config = Config.getInstance();
 			targetFrame = "Menu";
 			proTips = new Array();
 			proTips.push("You can fire with mouse!");
@@ -86,5 +87,6 @@
 			System.gc();
 			gotoLabel(targetFrame);
 		}
+		
 	}
 }

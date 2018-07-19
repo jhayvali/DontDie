@@ -1,0 +1,1 @@
+bullet_speed=10&bullet_radius=3&ghost_health=1&ghost_radius=3&perk_cost=20&player_shotcooldown=15&player_speed=5&player_health=10&player_radius=15&player_energy=100

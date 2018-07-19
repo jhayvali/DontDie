@@ -69,9 +69,9 @@
 				keys.push("E");
 			}
 			if (keys.length==2) {
-				if (thePlayer.energy >=20) {
+				if (thePlayer.energy >=Config.getInstance().perkCost) {
 					if (addPerk()) {
-						thePlayer.energy-=20;
+						thePlayer.energy-=Config.getInstance().perkCost;
 					}
 				}
 				keys=new Array();
@@ -164,7 +164,9 @@
 			if (spawnCounter > 100) {
 				spawnCounter = 0;
 				for (var i = 0; i < numToSpawn; i++) {
-					var g = new Ghost();
+					var g = new Ghost1();
+					if(Math.random()<0.5) g = new Ghost2();
+					
 					addChild(g);
 					var rnd:Number = Math.random()*2*Math.PI;
 					g.x = thePlayer.x + Math.cos(rnd)*360;

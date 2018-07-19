@@ -32,14 +32,14 @@
 		public function Player() {
 			// constructor code
 			key = new KeyObject(stage);
-			health = 10;
-			shotCooldown = 15;
-			speed = 5;
+			health = Config.getInstance().playerHealth;
+			shotCooldown = Config.getInstance().playerShotCooldown;
+			speed = Config.getInstance().playerSpeed;
 			bonusFiringSpeed=0;
 			numShots = 1;
 			bonusShots = 0;
-			radius = 15;
-			energy = 100/2;
+			radius = Config.getInstance().ghostRadius;
+			energy = Config.getInstance().playerEnergy/2;
 			fireSound = new LaserSound();
 			addEventListener(Event.ADDED_TO_STAGE, initialise);
 			addEventListener(Event.REMOVED_FROM_STAGE, cleanup);

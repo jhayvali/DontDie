@@ -11,8 +11,8 @@
 
 		public function Bullet() {
 			// constructor code
-			speed = 10;
-			radius = 3;
+			speed = Config.getInstance().bulletSpeed;
+			radius = Config.getInstance().bulletRadius;
 		}
 
 		public function update() {

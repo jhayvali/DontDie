@@ -7,18 +7,18 @@
 
 	public class Ghost extends MovieClip {
 
-		private var speed: int;
-		private var target: Point;
-		private var health: int;
-		private var timeToTarget:int;
+		protected var speed: int;
+		protected var target: Point;
+		protected var health: int;
+		protected var timeToTarget:int;
 		public var radius:int;
 
 		public function Ghost() {
 			// constructor code
-			health = 1;
+			health = Config.getInstance().ghostHealth;
 			timeToTarget = 0;
 			speed = 2 + Math.random() * 5;
-			radius = 10;
+			radius = Config.getInstance().bulletRadius;
 			target = new Point(Math.random() * 640, Math.random() * 500);
 		}
 
